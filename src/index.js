@@ -5,11 +5,7 @@ import * as serviceWorker from "./serviceWorker";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/lib/integration/react";
 import MomentUtils from "@date-io/moment";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardTimePicker,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 // import the two exports from the last code snippet.
 import { persistor, store } from "./store";

@@ -25,11 +25,10 @@ import CreateTaskForm from "./Components/CreateTaskForm";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
 import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
-import { AddIcon } from "@material-ui/icons/Add";
 import Fab from "@material-ui/core/Fab";
 
-const humanize = (seconds) => {
-  var sec_num = parseInt(seconds, 10);
+const humanize = (secs) => {
+  var sec_num = parseInt(secs, 10);
   var hours = Math.floor(sec_num / 3600);
   var minutes = Math.floor((sec_num - hours * 3600) / 60);
   var seconds = sec_num - hours * 3600 - minutes * 60;
@@ -78,14 +77,12 @@ const Timer = ({ startTime }) => {
 };
 
 function App(props) {
-  console.log("Props", props);
   const taskList = Object.values(props.tasks);
   const [search, setSearch] = useState("");
   const [modal, toggleModal] = useState({ show: false, value: null });
   const [date, setDate] = useState(null);
   const [darkMode, toggleDarkMode] = useState(false);
 
-  console.log("Date", date);
   const onStart = (task) => {
     props.startTask(task);
   };
@@ -281,6 +278,33 @@ function App(props) {
             </TableHead>
             {displayList.map(taskListItem)}
           </Table>
+
+          {displayList.length == 0 && !search && !date && (
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              style={{ margin: "20px" }}
+            >
+              <Typography variant={"subtitle2"}>
+                Welcome! Let's start by creating some tasks!
+              </Typography>
+            </Grid>
+          )}
+          {displayList.length == 0 && (search || date) && (
+            <Grid
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              style={{ margin: "20px" }}
+            >
+              <Typography variant={"subtitle2"}>
+                Sorry! No tasks found with these parameters.
+              </Typography>
+            </Grid>
+          )}
 
           <div>
             <Modal

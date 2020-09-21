@@ -6,7 +6,6 @@ const TagForm = ({ formik, ...rest }) => {
   return (
     <Formik initialValues={{ tag: "", tags: [] }}>
       {() => {
-        console.log("vals", formik.values);
         const _handleKeyDown = (e) => {
           if (e.key === "Enter") {
             if (formik.values.tag.length > 1) {
@@ -27,7 +26,6 @@ const TagForm = ({ formik, ...rest }) => {
           ) {
             const newTag = value.slice(0, value.length - 1);
             if (newTag.length > 1) {
-              console.log("Slics", newTag);
               formik.setFieldValue("tags", [...formik.values.tags, newTag]);
               formik.setFieldValue("tag", "");
             }

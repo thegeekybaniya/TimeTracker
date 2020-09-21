@@ -1,6 +1,5 @@
 import React from "react";
 import { Formik } from "formik";
-import { makeStyles } from "@material-ui/core/styles";
 
 import moment from "moment";
 import Typography from "@material-ui/core/Typography";
@@ -12,15 +11,7 @@ import * as Yup from "yup";
 
 import TagForm from "./TagForm";
 
-const useStyles = makeStyles(() => ({
-  root: { padding: "25px 50px 25px 50px" },
-
-  content: { margin: "10px 20px 10px 20px" },
-}));
-
 export default function CreateTaskForm({ modal, props, toggleModal }) {
-  const classes = useStyles();
-
   return (
     <Formik
       validationSchema={Yup.object().shape({
@@ -46,7 +37,6 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
           props.updateTask(updatedTask);
         } else {
           values.date = moment().format("LL");
-          console.log("Submitting", values, actions);
           props.createTask(values);
         }
         actions.setSubmitting(false);
@@ -60,7 +50,6 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
           filterTags.splice(i, 1);
           formik.setFieldValue("tags", filterTags);
         };
-        console.log(formik.errors);
         return (
           <form onSubmit={formik.handleSubmit}>
             <Grid
@@ -68,7 +57,7 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
               direction="column"
               justify="center"
               alignItems="center"
-              style={classes.root}
+              style={{ padding: "25px 50px 25px 50px" }}
             >
               <Typography variant={"h6"}>Create a new Task!</Typography>
               <TextField
@@ -78,17 +67,20 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
                 name="name"
                 onChange={formik.handleChange}
                 value={formik.values.name}
-                style={classes.content}
+                style={{ margin: "10px 20px 10px 20px" }}
                 error={formik.errors.name}
                 helperText={formik.errors.name}
               />
-              <TagForm formik={formik} style={classes.content} />
+              <TagForm
+                formik={formik}
+                style={{ margin: "10px 20px 10px 20px" }}
+              />
               <Grid
                 container
                 direction="row"
                 justify="center"
                 alignItems="center"
-                style={classes.content}
+                style={{ margin: "10px 20px 10px 20px" }}
               >
                 {formik.values.tags.map((v, i) => {
                   return (
@@ -104,9 +96,20 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
               <Button
                 variant="contained"
                 color="primary"
-                style={classes.content}
+                style={{ margin: "10px 20px 10px 20px" }}
+                onClick={formik.handleSubmit}
               >
                 Submit
+              </Button>
+              <Button
+                variant="outlined"
+                color="primary"
+                style={{ margin: "10px 20px 10px 20px" }}
+                onClick={() => {
+                  toggleModal(false);
+                }}
+              >
+                Close
               </Button>
             </Grid>
           </form>
