@@ -19,10 +19,14 @@ import StopIcon from "@material-ui/icons/Stop";
 import DeleteIcon from "@material-ui/icons/Delete";
 import EditIcon from "@material-ui/icons/Edit";
 import Chip from "@material-ui/core/Chip";
-
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import Brightness3Icon from "@material-ui/icons/Brightness3";
 import CreateTaskForm from "./Components/CreateTaskForm";
 
 import { KeyboardDatePicker } from "@material-ui/pickers";
+import { ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
+import { AddIcon } from "@material-ui/icons/Add";
+import Fab from "@material-ui/core/Fab";
 
 const humanize = (seconds) => {
   var sec_num = parseInt(seconds, 10);
@@ -79,6 +83,7 @@ function App(props) {
   const [search, setSearch] = useState("");
   const [modal, toggleModal] = useState({ show: false, value: null });
   const [date, setDate] = useState(null);
+  const [darkMode, toggleDarkMode] = useState(false);
 
   console.log("Date", date);
   const onStart = (task) => {
@@ -203,80 +208,107 @@ function App(props) {
       </React.Fragment>
     );
   };
-  return (
-    <Container justify="center" alignItems="center">
-      <Typography variant={"h1"} align={"center"} gutterBottom>
-        Time Tracker!
-      </Typography>
 
-      <SearchBar onChange={onSearchChange} addTaskClick={addTaskCLick} />
-      <Grid
-        container
-        direction="row"
-        justify={date ? "space-between" : "flex-end"}
-        alignItems="center"
-        style={{ padding: "10px" }}
-      >
-        {date && (
-          <Chip
-            label={"Showing Tasks for Date " + date.format("LL")}
-            onDelete={() => {
-              setDate(null);
+  const theme = createMuiTheme({
+    palette: { type: darkMode ? "dark" : "light" },
+  });
+  return (
+    <ThemeProvider theme={theme}>
+      <Paper style={{ height: "100vh" }}>
+        <Container justify="center" alignItems="center">
+          <Fab
+            aria-label="add"
+            style={{
+              right: 20,
+              bottom: 20,
+              position: "fixed",
             }}
-          />
-        )}
-        <KeyboardDatePicker
-          disableToolbar
-          variant="inline"
-          format="LL"
-          margin="normal"
-          id="date-picker-inline"
-          label="Filter By Date"
-          value={date}
-          onChange={setDate}
-          KeyboardButtonProps={{
-            "aria-label": "change date",
-          }}
-        />
-      </Grid>
-      <Table>
-        <TableHead>
-          <TableRow>
-            <TableCell>Task Name</TableCell>
-            <TableCell align={"right"}>Created on</TableCell>
-            <TableCell>Tags</TableCell>
-            <TableCell align="right">Total Time</TableCell>
-            <TableCell align="right">Timer</TableCell>
-            <TableCell align="right">Actions</TableCell>
-          </TableRow>
-        </TableHead>
-        {displayList.map(taskListItem)}
-      </Table>
-      <div>
-        <Modal
-          open={modal.show}
-          onClose={() => {
-            toggleModal({ show: !modal.show, value: null });
-          }}
-        >
+            onClick={() => {
+              toggleDarkMode(!darkMode);
+            }}
+          >
+            {darkMode ? <WbSunnyIcon /> : <Brightness3Icon />}
+          </Fab>
+          <Typography
+            variant={"h2"}
+            align={"center"}
+            gutterBottom
+            style={{ paddingTop: "20px" }}
+          >
+            Time Tracker!
+          </Typography>
+
+          <SearchBar onChange={onSearchChange} addTaskClick={addTaskCLick} />
           <Grid
             container
             direction="row"
-            justify="center"
+            justify={date ? "space-between" : "flex-end"}
             alignItems="center"
-            style={{ minHeight: "100vh" }}
+            style={{ padding: "10px" }}
           >
-            <Paper>
-              <CreateTaskForm
-                modal={modal}
-                props={props}
-                toggleModal={toggleModal}
+            {date && (
+              <Chip
+                label={"Showing Tasks for Date " + date.format("LL")}
+                onDelete={() => {
+                  setDate(null);
+                }}
               />
-            </Paper>
+            )}
+            <KeyboardDatePicker
+              disableToolbar
+              variant="inline"
+              format="LL"
+              margin="normal"
+              id="date-picker-inline"
+              label="Filter By Date"
+              value={date}
+              onChange={setDate}
+              KeyboardButtonProps={{
+                "aria-label": "change date",
+              }}
+            />
           </Grid>
-        </Modal>
-      </div>
-    </Container>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>Task Name</TableCell>
+                <TableCell align={"right"}>Created on</TableCell>
+                <TableCell>Tags</TableCell>
+                <TableCell align="right">Total Time</TableCell>
+                <TableCell align="right">Timer</TableCell>
+                <TableCell align="right">Actions</TableCell>
+              </TableRow>
+            </TableHead>
+            {displayList.map(taskListItem)}
+          </Table>
+
+          <div>
+            <Modal
+              open={modal.show}
+              onClose={() => {
+                toggleModal({ show: !modal.show, value: null });
+              }}
+            >
+              <Grid
+                container
+                direction="row"
+                justify="center"
+                alignItems="center"
+                style={{ minHeight: "100vh" }}
+              >
+                <Paper>
+                  <CreateTaskForm
+                    modal={modal}
+                    props={props}
+                    toggleModal={toggleModal}
+                  />
+                </Paper>
+              </Grid>
+            </Modal>
+          </div>
+        </Container>
+      </Paper>
+    </ThemeProvider>
   );
 }
 

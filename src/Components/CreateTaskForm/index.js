@@ -1,5 +1,7 @@
 import React from "react";
 import { Formik } from "formik";
+import { makeStyles } from "@material-ui/core/styles";
+
 import moment from "moment";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -10,7 +12,15 @@ import * as Yup from "yup";
 
 import TagForm from "./TagForm";
 
+const useStyles = makeStyles(() => ({
+  root: { padding: "25px 50px 25px 50px" },
+
+  content: { margin: "10px 20px 10px 20px" },
+}));
+
 export default function CreateTaskForm({ modal, props, toggleModal }) {
+  const classes = useStyles();
+
   return (
     <Formik
       validationSchema={Yup.object().shape({
@@ -58,7 +68,7 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
               direction="column"
               justify="center"
               alignItems="center"
-              style={{ padding: "25px 50px 25px 50px" }}
+              style={classes.root}
             >
               <Typography variant={"h6"}>Create a new Task!</Typography>
               <TextField
@@ -68,20 +78,17 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
                 name="name"
                 onChange={formik.handleChange}
                 value={formik.values.name}
-                style={{ margin: "10px 20px 10px 20px" }}
+                style={classes.content}
                 error={formik.errors.name}
                 helperText={formik.errors.name}
               />
-              <TagForm
-                formik={formik}
-                style={{ margin: "10px 20px 10px 20px" }}
-              />
+              <TagForm formik={formik} style={classes.content} />
               <Grid
                 container
                 direction="row"
                 justify="center"
                 alignItems="center"
-                style={{ margin: "10px 20px 10px 20px" }}
+                style={classes.content}
               >
                 {formik.values.tags.map((v, i) => {
                   return (
@@ -97,7 +104,7 @@ export default function CreateTaskForm({ modal, props, toggleModal }) {
               <Button
                 variant="contained"
                 color="primary"
-                style={{ margin: "10px 20px 10px 20px" }}
+                style={classes.content}
               >
                 Submit
               </Button>

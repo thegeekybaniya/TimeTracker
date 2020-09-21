@@ -29,7 +29,7 @@ export default function SearchBar({ onChange, addTaskClick }) {
   const classes = useStyles();
 
   return (
-    <Paper className={classes.root}>
+    <Paper className={classes.root} elevation={5}>
       <IconButton className={classes.iconButton} aria-label="menu">
         <SearchIcon />
       </IconButton>
